@@ -1,3 +1,3 @@
 # metricfactorization
 
-To appear
+Code will be released after acceptance.
