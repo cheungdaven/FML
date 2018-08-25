@@ -22,43 +22,26 @@ class MetricFRanking():
         self.cf_item_input = tf.placeholder(dtype=tf.int32, shape=[None], name='cf_item_input')
         self.y = tf.placeholder("float", [None], 'y')
 
-        #tf.constant(1.0000000000000, dtype=tf.float32)
 
         U = tf.Variable(tf.random_normal([self.num_users, self.N], stddev=1 / (self.N ** 0.5)), dtype=tf.float32)
         V = tf.Variable(tf.random_normal([self.num_items, self.N], stddev=1 / (self.N ** 0.5)), dtype=tf.float32)
 
-        #P =  tf.Variable(tf.random_normal([self.num_users, 5], stddev=1 / (self.N ** 0.5)), dtype=tf.float32)
-        #Q =  tf.Variable(tf.random_normal([self.num_items, 5], stddev=1 / (self.N ** 0.5)), dtype=tf.float32)
-
-        # latent_user = tf.nn.embedding_lookup(P ,self.cf_user_input)
-        # latent_item =  tf.nn.embedding_lookup(Q, self.cf_item_input)
         users = tf.nn.embedding_lookup(U ,self.cf_user_input)
         pos_items = tf.nn.embedding_lookup(V, self.cf_item_input)
 
 
-
-        # u_square = tf.square(users)
-        # i_square = tf.square(pos_items)
-
         L = tf.Variable(tf.random_normal([self.num_users, self.N], stddev=1 / (self.N ** 0.5)), dtype=tf.float32)
-        #l = tf.nn.embedding_lookup(L ,self.cf_user_input)
-        # margin = tf.nn.embedding_lookup(M, self.cf_user_input)
 
 
-
-        self.pos_distances = tf.reduce_sum(tf.squared_difference(users  , pos_items) ,1, name="pos_distances")    # + tf.reduce_sum(tf.multiply(latent_user, latent_item), 1)
+        self.pos_distances = tf.reduce_sum(tf.squared_difference(users  , pos_items) ,1, name="pos_distances")   
         self.pred = tf.reduce_sum(tf.nn.dropout(tf.squared_difference(users, pos_items),0.95), 1, name="pred")
 
         self.loss = tf.reduce_sum((1 + 0.1* self.y)*  tf.square((self.y * self.pred + (1 - self.y)  * tf.nn.relu(self.beta * (1 - self.y) - self.pred))))
-
-        #self.loss = tf.reduce_sum((1 +0.1* self.y ) * tf.square( self.beta * (1 - self.y) + 0 * self.y - self.pred))
-        #self.loss =  tf.reduce_sum( (1 - self.y)* tf.log(self.pos_distances + 1e-10) + self.y * tf.log(1 - self.pos_distances + 1e-10))
-
         gds = []
         gds.append(tf.train.AdagradOptimizer(self.lr).minimize(self.loss, var_list=[U, V]))
 
         with tf.control_dependencies(gds):
-            self.optimizer = gds + [[tf.assign(U, tf.clip_by_norm(U, self.clip_norm, axes=[1])),tf.assign(V, tf.clip_by_norm(V, self.clip_norm, axes=[1])),]]  # , tf.assign(M, tf.clip_by_value(M, 1, 2))
+            self.optimizer = gds + [[tf.assign(U, tf.clip_by_norm(U, self.clip_norm, axes=[1])),tf.assign(V, tf.clip_by_norm(V, self.clip_norm, axes=[1])),]]
 
         # initialize model
         init = tf.global_variables_initializer()
