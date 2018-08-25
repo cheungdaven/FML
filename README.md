@@ -2,7 +2,7 @@
 
 Code will be released after acceptance.
 
-If you use this code, please cite the following paper
+If you use this code, please cite the following paper. Thank you very much.
 ```
 @article{zhangmetric,
   title={Metric Factorization: Recommendation beyond Matrix Factorization},
