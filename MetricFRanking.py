@@ -39,10 +39,12 @@ class MetricFRanking():
         self.loss = tf.reduce_sum((1 + 0.1* self.y)*  tf.square((self.y * self.pred + (1 - self.y)  * tf.nn.relu(self.beta * (1 - self.y) - self.pred))))
         gds = []
         gds.append(tf.train.AdagradOptimizer(self.lr).minimize(self.loss, var_list=[U, V]))
-
+        '''
         with tf.control_dependencies(gds):
             self.optimizer = gds + [[tf.assign(U, tf.clip_by_norm(U, self.clip_norm, axes=[1])),tf.assign(V, tf.clip_by_norm(V, self.clip_norm, axes=[1])),]]
-
+        '''
+        clip_U = tf.assign(U, tf.clip_by_norm(U, self.clip_norm, axes=[1]))
+        clip_V = tf.assign(V, tf.clip_by_norm(V, self.clip_norm, axes=[1]))
         # initialize model
         init = tf.global_variables_initializer()
 
@@ -95,7 +97,7 @@ class MetricFRanking():
                 batch_item = item_random[i * self.batch_size:(i + 1) * self.batch_size]
                 batch_rating = rating_random[i * self.batch_size:(i + 1) * self.batch_size]
 
-                _, c, p = self.sess.run((self.optimizer, self.loss, self.pos_distances), feed_dict={self.cf_user_input: batch_user,
+                _, c, p, _, _ = self.sess.run((self.optimizer, self.loss, self.pos_distances, clip_U, clip_V), feed_dict={self.cf_user_input: batch_user,
                                                                              self.cf_item_input: batch_item,
                                                                              self.y: batch_rating})
                 avg_cost = c
