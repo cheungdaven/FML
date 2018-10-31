@@ -38,7 +38,7 @@ class MetricFRanking():
 
         self.loss = tf.reduce_sum((1 + 0.1* self.y)*  tf.square((self.y * self.pred + (1 - self.y)  * tf.nn.relu(self.beta * (1 - self.y) - self.pred))))
         gds = []
-        gds.append(tf.train.AdagradOptimizer(self.lr).minimize(self.loss, var_list=[U, V]))
+        self.optimizer = tf.train.AdagradOptimizer(self.lr).minimize(self.loss, var_list=[U, V])
         '''
         with tf.control_dependencies(gds):
             self.optimizer = gds + [[tf.assign(U, tf.clip_by_norm(U, self.clip_norm, axes=[1])),tf.assign(V, tf.clip_by_norm(V, self.clip_norm, axes=[1])),]]
