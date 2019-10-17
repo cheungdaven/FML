@@ -1,14 +1,19 @@
 # Use Python 3.5 or higher version.
 
-The revision of this paper titled "Unraveling Metric Vector Spaces withFactorization for Recommendation" has been accepted by IEEE Transactions on Industrial Informatics. I will update the bibtex once the camera ready version is ready.
+The revision of this paper titled "Unraveling Metric Vector Spaces withFactorization for Recommendation" has been accepted by IEEE Transactions on Industrial Informatics. 
 
 If you use this code, please cite the following paper. Thank you very much.
-Newest version is available in [ResearchGate](https://www.researchgate.net/publication/325570047_Metric_Factorization_Recommendation_beyond_Matrix_Factorization)
 ```
-@article{zhangmetric,
-  title={Metric Factorization: Recommendation beyond Matrix Factorization},
-  author={Zhang, Shuai and Yao, Lina and Tay, Yi and Xu, Xiwei and Zhang, Xiang and Zhu, Liming},
-  journal={arXiv preprint arXiv:1802.04606},
-  year={2018}
-}
+@ARTICLE{8867947,
+author={S. {Zhang} and L. {Yao} and B. {Wu} and X. {Xu} and X. {Zhang} and L. {Zhu}},
+journal={IEEE Transactions on Industrial Informatics},
+title={Unraveling Metric Vector Spaces with Factorization for Recommendation},
+year={2019},
+volume={},
+number={},
+pages={1-1},
+keywords={Matrix converters;Task analysis;Extraterrestrial measurements;Sparse matrices;Informatics;Euclidean distance;Recommender Systems;Matrix Factorization;Collaborative Filtering},
+doi={10.1109/TII.2019.2947112},
+ISSN={},
+month={},}
 ```
