@@ -37,7 +37,7 @@ class MetricFRanking():
         self.pred = tf.reduce_sum(tf.nn.dropout(tf.squared_difference(users, pos_items),0.95), 1, name="pred")
 
         #self.loss = tf.reduce_sum((1 + 0.1* self.y)*  tf.square((self.y * self.pred + (1 - self.y)  * tf.nn.relu(self.beta * (1 - self.y) - self.pred))))
-        self.loss = tf.reduce_sum((1 +  0.1 * self.y ) * tf.square(self.beta * (self.one - self.y) - self.pred_y)) #+ 0.001 * ( tf.nn.l2_loss(U) + tf.nn.l2_loss(V) ) 
+        self.loss = tf.reduce_sum((1 +  0.1 * self.y ) * tf.square(self.beta * (1 - self.y) - self.pred)) #+ 0.001 * ( tf.nn.l2_loss(U) + tf.nn.l2_loss(V) ) 
        
         gds = []
         self.optimizer = tf.train.AdagradOptimizer(self.lr).minimize(self.loss, var_list=[U, V])
